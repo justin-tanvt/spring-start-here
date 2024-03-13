@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+project_to_replicate="$(ls -tr . | grep 'sq.*ch.*ex.*' | tail -n1)"
+if [[ ! -r "${project_to_replicate}" ]]; then
+	echo '[FATAL ERROR]: project to replicate doesnt exist'
+	exit 1
+fi
+
+from_proj_dir_name="$(basename "${project_to_replicate}")"
+from_proj_ex_no="$(
+	echo ${from_proj_dir_name} | 
+	sed -r 's/^.+ex([0-9]+)$/\1/g' )"
+to_proj_ex_no="$((from_proj_ex_no+1))"
+to_proj_dir_name="$(
+	echo ${from_proj_dir_name} |
+	sed -r "s/^(.+ex)[0-9]+$/\1${to_proj_ex_no}/g" )"
+
+if [[ -r "${to_proj_dir_name}" ]]; then
+	echo '[FATAL ERROR]: new project already exists'
+	exit 1
+fi
+
+if cp -fr "${from_proj_dir_name}" "${to_proj_dir_name}"; then
+	echo "[SUCCESS]: copied to new project dir:[${to_proj_dir_name}]"
+else
+	echo "[FATAL ERROR]: failed to copy to new project dir:[${to_proj_dir_name}]"
+	exit 1
+fi
+
+if rm -rf "${to_proj_dir_name}/.idea"; then
+	echo "[SUCCESS]: removed './.idea' folder in new project dir"
+else
+	echo "[NON-FATAL ERROR]: failed to remove './.idea' folder in new project dir"
+fi
+
+if rm -rf "${to_proj_dir_name}/target"; then
+	echo "[SUCCESS]: removed './target' folder in new project dir"
+else
+	echo "[NON-FATAL ERROR]: failed to remove './target' folder in new project dir"
+fi
+
+if sed -i '' "s/${from_proj_dir_name}/${to_proj_dir_name}/g" "${to_proj_dir_name}/pom.xml"; then
+	echo "[SUCCESS]: refreshed pom.xml in new project dir"
+else
+	echo "[ERROR]: failed to refresh pom.xml in new project dir"
+fi
+
+exit 0
