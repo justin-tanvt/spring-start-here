@@ -1,7 +1,10 @@
-package main;
+package beans;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Parrot {
-    private String name;
+    private String name = "Koko";
 
     public Parrot() {
         System.out.println("parrot constructor called!");
