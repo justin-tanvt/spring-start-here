@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 project_to_replicate="$(ls -tr . | grep 'sq.*ch.*ex.*' | tail -n1)"
 if [[ ! -r "${project_to_replicate}" ]]; then
@@ -45,4 +45,6 @@ else
 	echo "[ERROR]: failed to refresh pom.xml in new project dir"
 fi
 
+git add "${to_proj_dir_name}"
+"${INTELLIJ_BINARY}" "${to_proj_dir_name}" &
 exit 0
