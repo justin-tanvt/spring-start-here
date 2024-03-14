@@ -31,12 +31,6 @@ else
 	exit 1
 fi
 
-if rm -rf "${to_proj_dir_name}/.idea"; then
-	echo "[SUCCESS]: removed './.idea' folder in new project dir"
-else
-	echo "[NON-FATAL ERROR]: failed to remove './.idea' folder in new project dir"
-fi
-
 if rm -rf "${to_proj_dir_name}/target"; then
 	echo "[SUCCESS]: removed './target' folder in new project dir"
 else
