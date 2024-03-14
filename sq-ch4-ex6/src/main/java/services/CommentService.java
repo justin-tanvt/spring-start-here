@@ -1,7 +1,7 @@
 package services;
 
 import model.Comment;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import proxies.CommentNotificationProxy;
 import repositories.CommentRepository;
@@ -14,7 +14,7 @@ public class CommentService {
 
     public CommentService(
             CommentRepository commentRepository,
-            CommentNotificationProxy commentNotificationProxy) {
+            @Qualifier("PUSH") CommentNotificationProxy commentNotificationProxy) {
         this.commentRepository = commentRepository;
         this.commentNotificationProxy = commentNotificationProxy;
     }
