@@ -10,10 +10,14 @@ from_proj_dir_name="$(basename "${project_to_replicate}")"
 from_proj_ex_no="$(
 	echo ${from_proj_dir_name} | 
 	sed -r 's/^.+ex([0-9]+)$/\1/g' )"
-to_proj_ex_no="$((from_proj_ex_no+1))"
-to_proj_dir_name="$(
+if [[ -z "$2" ]]; then
+  to_proj_ex_no="$((from_proj_ex_no+1))"
+  to_proj_dir_name="$(
 	echo ${from_proj_dir_name} |
 	sed -r "s/^(.+ex)[0-9]+$/\1${to_proj_ex_no}/g" )"
+else
+  to_proj_dir_name="$2"
+fi
 
 if [[ -r "${to_proj_dir_name}" ]]; then
 	echo '[FATAL ERROR]: new project already exists'

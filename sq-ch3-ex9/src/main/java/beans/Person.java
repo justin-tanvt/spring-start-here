@@ -1,6 +1,7 @@
 package beans;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,9 +11,9 @@ public class Person {
     private Parrot parrot;
 
     @Autowired
-    public Person(Parrot parrot) {
+    public Person(@Qualifier("parrot3") Parrot parrot1) {
         System.out.println("person constructor called!");
-        this.parrot = parrot;
+        this.parrot = parrot1;
     }
 
     public String getName() {

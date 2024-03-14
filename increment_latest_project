@@ -46,5 +46,6 @@ else
 fi
 
 git add "${to_proj_dir_name}"
+echo "opening newly-created [${to_proj_dir_name}] in IntelliJ"
 "${INTELLIJ_BINARY}" "${to_proj_dir_name}" &
 exit 0
