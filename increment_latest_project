@@ -33,10 +33,24 @@ else
 	echo "[NON-FATAL ERROR]: failed to remove './target' folder in new project dir"
 fi
 
+if rm -rf "${to_proj_dir_name}/.idea"; then
+	echo "[SUCCESS]: removed './.idea' folder in new project dir"
+else
+	echo "[NON-FATAL ERROR]: failed to remove './.idea' folder in new project dir"
+fi
+
 if sed -i '' "s/${from_proj_dir_name}/${to_proj_dir_name}/g" "${to_proj_dir_name}/pom.xml"; then
 	echo "[SUCCESS]: refreshed pom.xml in new project dir"
 else
 	echo "[ERROR]: failed to refresh pom.xml in new project dir"
+fi
+
+if [[ -r "${to_proj_dir_name}/src/main/resources/application.properties" ]]; then
+	if sed -i '' "s/${from_proj_dir_name}/${to_proj_dir_name}/g" "${to_proj_dir_name}/src/main/resources/application.properties"; then
+		echo "[SUCCESS]: refreshed application.properties in new project dir"
+	else
+		echo "[ERROR]: failed to refresh application.properties in new project dir"
+	fi
 fi
 
 git add "${to_proj_dir_name}"
