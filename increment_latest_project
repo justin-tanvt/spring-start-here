@@ -40,6 +40,6 @@ else
 fi
 
 git add "${to_proj_dir_name}"
-echo "opening newly-created [${to_proj_dir_name}] in IntelliJ"
-"${INTELLIJ_BINARY}" "${to_proj_dir_name}" 1>/dev/null 2>&1 &
+#echo "opening newly-created [${to_proj_dir_name}] in IntelliJ"
+#"${INTELLIJ_BINARY}" "${to_proj_dir_name}" 1>/dev/null 2>&1 &
 exit 0
