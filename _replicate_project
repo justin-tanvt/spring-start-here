@@ -1,6 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-project_to_replicate="$1"
+if [[ ! -z "$1" ]]; then
+	project_to_replicate="$1"
+else
+	project_to_replicate="$(ls -tr . | grep 'sq.*ch.*ex.*' | tail -n1)"
+fi
 if [[ ! -r "${project_to_replicate}" ]]; then
 	echo '[FATAL ERROR]: project to replicate doesnt exist'
 	exit 1
@@ -20,27 +24,44 @@ else
 fi
 
 if [[ -r "${to_proj_dir_name}" ]]; then
-	echo '[FATAL ERROR]: new project already exists'
-	exit 1
+        echo '[FATAL ERROR]: new project already exists'
+        exit 1
 fi
 
 if cp -fr "${from_proj_dir_name}" "${to_proj_dir_name}"; then
-	echo "[SUCCESS]: copied to new project dir:[${to_proj_dir_name}]"
+        echo "[SUCCESS]: copied to new project dir:[${to_proj_dir_name}]"
 else
-	echo "[FATAL ERROR]: failed to copy to new project dir:[${to_proj_dir_name}]"
-	exit 1
+        echo "[FATAL ERROR]: failed to copy to new project dir:[${to_proj_dir_name}]"
+        exit 1
 fi
 
 if rm -rf "${to_proj_dir_name}/target"; then
-	echo "[SUCCESS]: removed './target' folder in new project dir"
+        echo "[SUCCESS]: removed './target' folder in new project dir"
 else
-	echo "[NON-FATAL ERROR]: failed to remove './target' folder in new project dir"
+        echo "[NON-FATAL ERROR]: failed to remove './target' folder in new project dir"
+fi
+
+if rm -rf "${to_proj_dir_name}/.idea"; then
+        echo "[SUCCESS]: removed './.idea' folder in new project dir"
+else
+        echo "[NON-FATAL ERROR]: failed to remove './.idea' folder in new project dir"
 fi
 
 if sed -i '' "s/${from_proj_dir_name}/${to_proj_dir_name}/g" "${to_proj_dir_name}/pom.xml"; then
-	echo "[SUCCESS]: refreshed pom.xml in new project dir"
+        echo "[SUCCESS]: refreshed pom.xml in new project dir"
 else
-	echo "[ERROR]: failed to refresh pom.xml in new project dir"
+        echo "[ERROR]: failed to refresh pom.xml in new project dir"
 fi
 
+if [[ -r "${to_proj_dir_name}/src/main/resources/application.properties" ]]; then
+        if sed -i '' "s/${from_proj_dir_name}/${to_proj_dir_name}/g" "${to_proj_dir_name}/src/main/resources/application.properties"; then
+                echo "[SUCCESS]: refreshed application.properties in new project dir"
+        else
+                echo "[ERROR]: failed to refresh application.properties in new project dir"
+        fi
+fi
+
+git add "${to_proj_dir_name}"
+#echo "opening newly-created [${to_proj_dir_name}] in IntelliJ"
+#"${INTELLIJ_BINARY}" "${to_proj_dir_name}" 1>/dev/null 2>&1 &
 exit 0
