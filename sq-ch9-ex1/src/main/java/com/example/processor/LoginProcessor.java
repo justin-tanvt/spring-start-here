@@ -1,11 +1,17 @@
 package com.example.processor;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
+@RequestScope
 public class LoginProcessor {
     private String username;
     private String password;
+
+    public LoginProcessor() {
+        System.out.println(this + " instantiated!");
+    }
 
     public boolean login() {
         if (this.username.equals("natalie") && this.password.equals("password")) {

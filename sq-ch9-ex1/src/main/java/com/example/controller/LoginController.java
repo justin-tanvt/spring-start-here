@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
 
+    private final LoginProcessor loginProcessor;
+
+    public LoginController(LoginProcessor loginProcessor) {
+        System.out.println(this + " instantiated!");
+        this.loginProcessor = loginProcessor;
+        System.out.println("loginProcessor set above!");
+    }
+
     @GetMapping("/")
     public String loginGet() {
         return "login.html";
@@ -19,7 +27,6 @@ public class LoginController {
     public String loginPost(
             @RequestParam String username,
             @RequestParam String password,
-            LoginProcessor loginProcessor,
             Model model
     ) {
         model.addAttribute("loginProcessorHash", loginProcessor);
