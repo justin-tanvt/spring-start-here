@@ -1,0 +1,27 @@
+{
+	"info": {
+		"_postman_id": "f1fdd8b0-1814-4bd2-875c-3e4a2c71cb85",
+		"name": "spring-start-here",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ch10-ex3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{springboot-local}}/france",
+					"protocol": "http",
+					"host": [
+						"{{springboot-local}}"
+					],
+					"path": [
+						"france"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
